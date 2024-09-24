@@ -32,6 +32,9 @@ export default ((userOpts?: Partial<Options>) => {
     displayClass,
     cfg,
   }: QuartzComponentProps) => {
+    if (fileData.frontmatter.showRecentNotes != true) {
+      return <></>
+    }
     const opts = { ...defaultOptions(cfg), ...userOpts }
     const pages = allFiles.filter(opts.filter).sort(opts.sort)
     const remaining = Math.max(0, pages.length - opts.limit)
@@ -42,6 +45,12 @@ export default ((userOpts?: Partial<Options>) => {
           {pages.slice(0, opts.limit).map((page) => {
             const title = page.frontmatter?.title ?? i18n(cfg.locale).propertyDefaults.title
             const tags = page.frontmatter?.tags ?? []
+
+            if (page.slug === "index") {
+              return (
+                <></>
+              )
+            }
 
             return (
               <li class="recent-li">
